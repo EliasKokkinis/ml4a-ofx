@@ -1,31 +1,45 @@
 #include "ofApp.h"
 
-
+ofApp::ofApp(std::string path)
+{
+    std::cout << "Root path is set." << std::endl;
+    rootPath = path;
+}
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    std::cout << "Setup UI..." << std::endl;
     gui.setup();
     gui.setName("Audio t-SNE");
     gui.add(maxDuration.set("maxDuration", 1.0, 0.1, 2.0));
     gui.add(mouseRadius.set("mouseRadius", 250, 100, 500));
     gui.add(pauseLength.set("pauseLength", 2.0, 0.2, 5.0));
     
+    //string file = "points.json";
+    std::cout << "Read JSON..." << std::endl;
     ofxJSONElement result;
-    //The following line produces errors in Unix based systems
-    //bool parsingSuccessful = result.open(file);
     std::ifstream inputFile;
-    inputFile.open("/Users/ekokkinis/Desktop/Samples/points.txt", std::ios::in);
+    inputFile.open(rootPath + "/points.txt", std::ios::in);
     std::string content;
     std::getline(inputFile, content);
-    bool parsingSuccessful = result.parse(content);
     
+    
+    bool parsingSuccessful = result.parse(content);
+    //bool parsingSuccessful = result.open(file);
+    std::cout << "Load data to memory..." << std::endl;
     for (int i=0; i<result.size(); i++) {
+        std::cout << "Loading sample " << i << std::endl;
         string path = result[i]["path"].asString();
         float x = result[i]["point"][0].asFloat();
         float y = result[i]["point"][1].asFloat();
+        float r = result[i]["color"][0].asFloat();
+        float g = result[i]["color"][1].asFloat();
+        float b = result[i]["color"][2].asFloat();
+        
         AudioClip newSound;
         newSound.sound.load(path);
         newSound.point.set(x, y);
+        newSound.color.set(r, g, b);
         newSound.t = 0;
         sounds.push_back(newSound);
     }
@@ -49,7 +63,7 @@ void ofApp::draw(){
             ofSetColor(0, 255, 0, 180);
         }
         else {
-            ofSetColor(255, 180);
+            ofSetColor(sounds[i].color);
         }
         ofDrawCircle(ofGetWidth() * sounds[i].point.x, ofGetHeight() * sounds[i].point.y, 4);
 

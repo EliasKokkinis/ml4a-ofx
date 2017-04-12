@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxJSON.h"
@@ -8,12 +9,14 @@ struct AudioClip {
 public:
     ofSoundPlayer sound;
     ofPoint point;
+    ofFloatColor color;
     float t;
 };
 
 class ofApp : public ofBaseApp{
     
 public:
+    ofApp(std::string path);
     void setup();
     void update();
     void draw();
@@ -31,6 +34,7 @@ public:
     void gotMessage(ofMessage msg);
     
     vector<AudioClip> sounds;
+    std::string rootPath;
     
     ofParameter<float> maxDuration;
     ofParameter<float> mouseRadius;
