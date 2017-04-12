@@ -4,9 +4,6 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
-    // this should point to the json file containing your audio files and tsne coordinates
-    string file = "drums.json";
-    
     gui.setup();
     gui.setName("Audio t-SNE");
     gui.add(maxDuration.set("maxDuration", 1.0, 0.1, 2.0));
@@ -14,7 +11,14 @@ void ofApp::setup(){
     gui.add(pauseLength.set("pauseLength", 2.0, 0.2, 5.0));
     
     ofxJSONElement result;
-    bool parsingSuccessful = result.open(file);
+    //The following line produces errors in Unix based systems
+    //bool parsingSuccessful = result.open(file);
+    std::ifstream inputFile;
+    inputFile.open("/Users/ekokkinis/Desktop/Samples/points.txt", std::ios::in);
+    std::string content;
+    std::getline(inputFile, content);
+    bool parsingSuccessful = result.parse(content);
+    
     for (int i=0; i<result.size(); i++) {
         string path = result[i]["path"].asString();
         float x = result[i]["point"][0].asFloat();
