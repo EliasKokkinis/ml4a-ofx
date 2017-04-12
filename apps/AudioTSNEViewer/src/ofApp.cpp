@@ -1,9 +1,9 @@
 #include "ofApp.h"
 
-ofApp::ofApp(std::string path)
+ofApp::ofApp(std::string file)
 {
     std::cout << "Root path is set." << std::endl;
-    rootPath = path;
+    fullFilePath = file;
 }
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -19,7 +19,7 @@ void ofApp::setup(){
     std::cout << "Read JSON..." << std::endl;
     ofxJSONElement result;
     std::ifstream inputFile;
-    inputFile.open(rootPath + "/points.txt", std::ios::in);
+    inputFile.open(fullFilePath, std::ios::in);
     std::string content;
     std::getline(inputFile, content);
     

@@ -16,7 +16,7 @@ public:
 class ofApp : public ofBaseApp{
     
 public:
-    ofApp(std::string path);
+    ofApp(std::string file);
     void setup();
     void update();
     void draw();
@@ -34,7 +34,7 @@ public:
     void gotMessage(ofMessage msg);
     
     vector<AudioClip> sounds;
-    std::string rootPath;
+    std::string fullFilePath; // Full path to file with JSON data
     
     ofParameter<float> maxDuration;
     ofParameter<float> mouseRadius;
